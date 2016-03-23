@@ -32,13 +32,13 @@ namespace TrSQL
         /// 数据库参数工厂
         /// </summary>
         /// <returns>数据库参数</returns>
-        IDataParameter DataParameterFactory();
+        Items.DataParameter DataParameterFactory();
 
         /// <summary>
         /// 数据库命令工厂
         /// </summary>
         /// <returns>数据库命令</returns>
-        IDbCommand CommandFactory();
+        IDbCommand CommandFactory(string commandText, params Items.DataParameter[] parameters);
 
         /// <summary>
         /// 数据库事务工厂

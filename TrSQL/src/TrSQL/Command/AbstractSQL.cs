@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
+using System;
 
 namespace TrSQL.Command
 {
@@ -12,6 +14,11 @@ namespace TrSQL.Command
         /// 数据库
         /// </summary>
         protected AbstractDatabase _database;
+
+        /// <summary>
+        /// 基础参数组
+        /// </summary>
+        protected List<Items.DataParameter> _parameters;
 
         /// <summary>
         /// 参数索引
@@ -33,8 +40,18 @@ namespace TrSQL.Command
         }
         #endregion
 
-        #region 方法
-
+        #region 共有方法
+        /// <summary>
+        /// 创建数据参数
+        /// </summary>
+        /// <param name="columnName">属性名</param>
+        /// <param name="dataType">属性类型</param>
+        /// <param name="value">属性值</param>
+        /// <returns>数据参数</returns>
+        public Items.DataParameter CreateDataParameter(string columnName,Define.DataType dataType, object value)
+        {
+            return Items.DataParameter.Create(this._database, columnName, this.GetNewParameterIndex(), value, dataType);
+        }
 
         /// <summary>
         /// 获取SQL语句字符串
@@ -46,7 +63,21 @@ namespace TrSQL.Command
         /// 转换为数据库命令
         /// </summary>
         /// <returns></returns>
-        public abstract IDbCommand ToDbCommand();
+        public IDbCommand ToDbCommand()
+        {
+            return this._database.CommandFactory(this.GetSQLText(), this._parameters.ToArray());
+        }
+        #endregion
+
+        #region 私有方法
+        /// <summary>
+        /// 获取新参数的索引
+        /// </summary>
+        /// <returns></returns>
+        private string GetNewParameterIndex()
+        {
+            return Convert.ToString(this._parameterIndex++, 16);
+        }
         #endregion
     }
 }

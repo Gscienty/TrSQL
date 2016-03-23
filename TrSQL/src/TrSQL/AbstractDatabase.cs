@@ -2,6 +2,8 @@
 using TrSQL.Define;
 using System.Data;
 using System.Data.Common;
+using TrSQL.Items;
+
 namespace TrSQL
 {
     public abstract class AbstractDatabase : IDatabase
@@ -31,19 +33,21 @@ namespace TrSQL
         /// <summary>
         /// 获取当前数据库对应的数据参数工厂
         /// </summary>
-        public abstract IDataParameter DataParameterFactory();
-
-        /// <summary>
-        /// 数据库命令工厂
-        /// </summary>
-        /// <returns>数据库命令</returns>
-        public abstract IDbCommand CommandFactory();
+        public abstract Items.DataParameter DataParameterFactory();
 
         /// <summary>
         /// 数据库事务工厂
         /// </summary>
         /// <returns>数据库事务</returns>
         public abstract IDbConnection TransactionFactory();
+
+        /// <summary>
+        /// 数据库命令工厂
+        /// </summary>
+        /// <param name="commandText">命令字符串</param>
+        /// <param name="parameters">参数集合</param>
+        /// <returns></returns>
+        public abstract IDbCommand CommandFactory(string commandText, params DataParameter[] parameters);
         #endregion
 
 

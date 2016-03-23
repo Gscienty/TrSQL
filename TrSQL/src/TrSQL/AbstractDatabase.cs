@@ -1,4 +1,5 @@
-﻿using TrSQL.Define;
+﻿using System;
+using TrSQL.Define;
 using System.Data;
 using System.Data.Common;
 namespace TrSQL
@@ -15,7 +16,13 @@ namespace TrSQL
         /// 获取当前数据库的类型
         /// </summary>
         public abstract DatabaseType DatabaseType { get; }
+        #endregion
 
+        #region 方法
+        /// <summary>
+        /// 获取当前数据库对应的数据参数工厂
+        /// </summary>
+        public abstract IDataParameter DataParameterFactory();
         #endregion
     }
 }

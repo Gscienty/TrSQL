@@ -38,11 +38,10 @@ namespace TrSQL.Items
         private DataParameter(
             AbstractDatabase database,
             string columnName,
-            Func<IDataParameter> dataParameterFactory, 
             string parameterIndex,
             object value)
         {
-            _parameter = dataParameterFactory();
+            _parameter = database.DataParameterFactory();
             _parameter.SourceColumn = columnName;
             if(value == null)
             {
@@ -56,6 +55,37 @@ namespace TrSQL.Items
             {
                 _parameter.Value = value;
             }
+        }
+        #endregion
+
+        #region 工厂方法
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="database"></param>
+        /// <param name="columnName"></param>
+        /// <param name="parameterIndex"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DataParameter Create(AbstractDatabase database, string columnName, string parameterIndex, object value, Define.DataType dataType)
+        {
+            DataParameter param = new DataParameter(database, columnName, parameterIndex, value);
+            param._parameter.DbType = DataParameter.GetDbType(dataType);
+            return param;
+        }
+        #endregion
+
+
+
+        #region 私有方法
+        private static DbType GetDbType(Define.DataType dataType)
+        {
+            return (DbType)(int)dataType;
+        }
+
+        private static Define.DataType GetDataType(DbType dbType)
+        {
+            return (Define.DataType)(int)dbType;
         }
         #endregion
     }
